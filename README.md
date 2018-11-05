@@ -16,12 +16,12 @@ Also shown in the demonstration are commands to run the following Docker images:
 ### Contents
 
 1. [Preparation](#preparation)
+    1. [Software](#software)
     1. [Set environment variables for preparation](#set-environment-variables-for-preparation)
     1. [Clone repository](#clone-repository)
-    1. [Software](#software)
     1. [Docker images](#docker-images)
-1. [Run Docker formation](#run-docker-formation)
     1. [Create SENZING_DIR](#create-senzing_dir)
+1. [Demonstration](#demonstration)
     1. [Set environment variables for docker](#set-environment-variables-for-docker)
     1. [Launch docker formation](#launch-docker-formation)
     1. [Add Senzing schemas](#add-senzing-schemas)
@@ -30,6 +30,23 @@ Also shown in the demonstration are commands to run the following Docker images:
 1. [Cleanup](#cleanup)
 
 ## Preparation
+
+### Software
+
+The following software programs need to be installed.
+
+#### docker
+
+```console
+docker --version
+docker run hello-world
+```
+
+#### docker-compose
+
+```console
+docker-compose --version
+```
 
 ### Set environment variables for preparation
 
@@ -59,23 +76,6 @@ cd  ${GIT_ACCOUNT_DIR}
 git clone ${GIT_REPOSITORY_URL}
 ```
 
-### Software
-
-The following software programs need to be installed.
-
-#### docker
-
-```console
-docker --version
-docker run hello-world
-```
-
-#### docker-compose
-
-```console
-docker-compose --version
-```
-
 ### Docker images
 
 1. Because an independent download is needed for the DB2 ODBC client, the
@@ -100,12 +100,12 @@ docker-compose --version
     docker build --tag senzing/g2command-db2-cluster   https://github.com/senzing/docker-g2command-db2-cluster.git
     ```
 
-## Run Docker formation
-
 ### Create SENZING_DIR
 
 If you do not already have an `/opt/senzing` directory on your local system, visit
 [HOWTO - Create SENZING_DIR](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/create-senzing-dir.md).
+
+## Demonstration
 
 ### Set environment variables for docker
 
@@ -114,10 +114,15 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 1. For explanation of other environment variables, see:
     1. [senzing/docker-python-db2-cluster-base](https://github.com/Senzing/docker-python-db2-cluster-base#set-environment-variables-for-demonstration)
     1. [senzing/docker-db2express-c](https://github.com/Senzing/docker-db2express-c#run-docker-container)
-1. The values in the example are specific to
+1. The values in the following example are specific to
    [docker-compose.yaml](docker-compose.yaml):
 
     ```console
+    export GIT_ACCOUNT=senzing
+    export GIT_REPOSITORY=docker-compose-db2-cluster-demo
+    export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
+    export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
+
     export SENZING_DIR=/opt/senzing
 
     export DB2_HOST_CORE=senzing-db2-core
