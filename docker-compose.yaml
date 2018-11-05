@@ -1,0 +1,66 @@
+version: '3'
+services:
+
+  db2-core:
+    image: senzing/db2express-c:latest
+    command: db2start
+    container_name: senzing-db2-core
+    environment:
+      LICENSE: accept
+      DB2INST1_PASSWORD: ${DB2_PASSWORD_CORE:-db2inst1}
+    networks:
+      - backend
+    ports:
+      - 50000:50000
+    volumes:
+      - ${DB2_STORAGE_CORE:-/storage/docker/senzing/docker-compose-db2-cluster-demo-core}:/home/db2inst1/db2inst1
+
+  db2-res:
+    image: senzing/db2express-c:latest
+    command: db2start
+    container_name: senzing-db2-res
+    environment:
+      LICENSE: accept
+      DB2INST1_PASSWORD: ${DB2_PASSWORD_RES:-db2inst1}
+    networks:
+      - backend
+    ports:
+      - 50001:50000
+    volumes:
+      - ${DB2_STORAGE_RES:-/storage/docker/senzing/docker-compose-db2-cluster-demo-res}:/home/db2inst1/db2inst1
+
+  db2-libfe:
+    image: senzing/db2express-c:latest
+    command: db2start
+    container_name: senzing-db2-libfe
+    environment:
+      LICENSE: accept
+      DB2INST1_PASSWORD: ${DB2_PASSWORD_LIBFE:-db2inst1}
+    networks:
+      - backend
+    ports:
+      - 50002:50000
+    volumes:
+      - ${DB2_STORAGE_LIBFE:-/storage/docker/senzing/docker-compose-db2-cluster-demo-libfe}:/home/db2inst1/db2inst1
+
+  app:
+    image: senzing/python-db2-cluster-demo
+    container_name: senzing-app
+    environment:
+      SENZING_CORE_DATABASE_URL: "db2://db2inst1:${DB2_PASSWORD_CORE:-db2inst1}@senzing-db2-core:50000/${DB2_DATABASE_ALIAS_CORE:-G2_CORE}"
+      SENZING_RES_DATABASE_URL: "db2://db2inst1:${DB2_PASSWORD_RES:-db2inst1}@senzing-db2-res:50000/${DB2_DATABASE_ALIAS_RES:-G2_RES}"
+      SENZING_LIBFE_DATABASE_URL: "db2://db2inst1:${DB2_PASSWORD_LIBFE:-db2inst1}@senzing-db2-libfe:50000/${DB2_DATABASE_ALIAS_LIBFE:-G2_LIBFE}"
+    networks:
+      - backend
+    ports:
+      - 5000:5000
+    volumes:
+      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+    depends_on:
+      - db2-core
+      - db2-res
+      - db2-libfe
+    restart: on-failure
+
+networks:
+  backend:
