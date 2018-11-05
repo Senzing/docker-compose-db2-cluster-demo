@@ -16,13 +16,13 @@ Also shown in the demonstration are commands to run the following Docker images:
 ### Contents
 
 1. [Preparation](#preparation)
-    1. [Set environment variables](#set-environment-variables)
-    1. [Clone repository](#clone-repository)
     1. [Software](#software)
+    1. [Set environment variables for preparation](#set-environment-variables-for-preparation)
+    1. [Clone repository](#clone-repository)
     1. [Docker images](#docker-images)
-1. [Run Docker formation](#run-docker-formation)
     1. [Create SENZING_DIR](#create-senzing_dir)
-    1. [Set environment variables](#set-environment-variables)
+1. [Demonstration](#demonstration)
+    1. [Set environment variables for docker](#set-environment-variables-for-docker)
     1. [Launch docker formation](#launch-docker-formation)
     1. [Add Senzing schemas](#add-senzing-schemas)
     1. [Add content](#add-content)
@@ -31,7 +31,24 @@ Also shown in the demonstration are commands to run the following Docker images:
 
 ## Preparation
 
-### Set environment variables
+### Software
+
+The following software programs need to be installed.
+
+#### docker
+
+```console
+docker --version
+docker run hello-world
+```
+
+#### docker-compose
+
+```console
+docker-compose --version
+```
+
+### Set environment variables for preparation
 
 These variables may be modified, but do not need to be modified.
 The variables are used throughout the installation procedure.
@@ -59,23 +76,6 @@ cd  ${GIT_ACCOUNT_DIR}
 git clone ${GIT_REPOSITORY_URL}
 ```
 
-### Software
-
-The following software programs need to be installed.
-
-#### docker
-
-```console
-docker --version
-docker run hello-world
-```
-
-#### docker-compose
-
-```console
-docker-compose --version
-```
-
 ### Docker images
 
 1. Because an independent download is needed for the DB2 ODBC client, the
@@ -100,31 +100,29 @@ docker-compose --version
     docker build --tag senzing/g2command-db2-cluster   https://github.com/senzing/docker-g2command-db2-cluster.git
     ```
 
-## Run Docker formation
-
 ### Create SENZING_DIR
 
 If you do not already have an `/opt/senzing` directory on your local system, visit
 [HOWTO - Create SENZING_DIR](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/create-senzing-dir.md).
 
+## Demonstration
+
 ### Set environment variables for docker
 
-1. **SENZING_DIR** -
-   Path on the local system where
-   [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
-   has been extracted.
-   See [Create SENZING_DIR](#create-senzing_dir).
-   No default.
-   Usually set to "/opt/senzing".
-1. **DB2INST1_PASSWORD** -
-   The password for the the database "db2inst1" user name.
-   Default: "root"
-1. **DB2_STORAGE** -
-   Path on local system where the database files are stored.
-   Default: "/storage/docker/senzing/docker-compose-db2-cluster-demo"
-1. Example:
+1. **DB2_NETWORK** -
+   The network created by `docker-compose`.  To view, run `docker network ls`.
+1. For explanation of other environment variables, see:
+    1. [senzing/docker-python-db2-cluster-base](https://github.com/Senzing/docker-python-db2-cluster-base#set-environment-variables-for-demonstration)
+    1. [senzing/docker-db2express-c](https://github.com/Senzing/docker-db2express-c#run-docker-container)
+1. The values in the following example are specific to
+   [docker-compose.yaml](docker-compose.yaml):
 
     ```console
+    export GIT_ACCOUNT=senzing
+    export GIT_REPOSITORY=docker-compose-db2-cluster-demo
+    export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
+    export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
+
     export SENZING_DIR=/opt/senzing
 
     export DB2_HOST_CORE=senzing-db2-core
@@ -151,7 +149,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     export DB2_PASSWORD_RES=db2inst1
     export DB2_PASSWORD_LIBFE=db2inst1
 
-    export DB2_NETWORK=dockercomposedb2demo_backend
+    export DB2_NETWORK=dockercomposedb2clusterdemo_backend
     ```
 
 ### Launch docker formation
@@ -161,8 +159,9 @@ cd ${GIT_REPOSITORY_DIR}
 docker-compose up
 ```
 
-The database storage will be on the local system at ${db2_STORAGE}.
-The default database storage path is `/storage/docker/senzing/docker-compose-db2-cluster-demo`.
+The DB2 database storage will be on the local system at ${DB2_STORAGE_*} paths.
+Example: `/storage/docker/senzing/docker-compose-db2-cluster-demo-core`.
+The default database storage path is `/storage/docker/senzing/docker-compose-db2-cluster-demo-XXXX`.
 
 ### Add Senzing schemas
 
@@ -180,21 +179,16 @@ In a separate terminal window:
       senzing/db2
     ```
 
-1. Catalog "remote" database. In docker container, run
+1. Become "db2inst1" user. In docker container, run
 
     ```console
     su - db2inst1
-
-    db2 catalog tcpip node G2_CORE  remote senzing-db2-core  server 50000
-    db2 catalog tcpip node G2_RES   remote senzing-db2-res   server 50000
-    db2 catalog tcpip node G2_LIBFE remote senzing-db2-libfe server 50000
-
-    db2 terminate
     ```
 
 1. Create database on "CORE" DB2 server. In docker container, run
 
     ```console
+    db2 catalog tcpip node G2_CORE remote senzing-db2-core server 50000
     db2 attach to G2_CORE user db2inst1 using db2inst1
     db2 create database g2 using codeset utf-8 territory us
     db2 connect to g2 user db2inst1 using db2inst1
@@ -205,6 +199,7 @@ In a separate terminal window:
 1. Create database on "RES" DB2 server. In docker container, run
 
     ```console
+    db2 catalog tcpip node G2_RES remote senzing-db2-res server 50000
     db2 attach to G2_RES user db2inst1 using db2inst1
     db2 create database g2 using codeset utf-8 territory us
     db2 connect to g2 user db2inst1 using db2inst1
@@ -215,6 +210,7 @@ In a separate terminal window:
 1. Create database on "LIBFE" DB2 server. In docker container, run
 
     ```console
+    db2 catalog tcpip node G2_LIBFE remote senzing-db2-libfe server 50000
     db2 attach to G2_LIBFE user db2inst1 using db2inst1
     db2 create database g2 using codeset utf-8 territory us
     db2 connect to g2 user db2inst1 using db2inst1
@@ -275,6 +271,6 @@ cd ${GIT_REPOSITORY_DIR}
 docker-compose down
 
 sudo rm -rf /storage/docker/senzing/docker-compose-db2-cluster-demo-core
-sudo rm -rf /storage/docker/senzing/docker-compose-db2-cluster-demo-res
 sudo rm -rf /storage/docker/senzing/docker-compose-db2-cluster-demo-libfe
+sudo rm -rf /storage/docker/senzing/docker-compose-db2-cluster-demo-res
 ```
