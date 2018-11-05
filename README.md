@@ -16,13 +16,13 @@ Also shown in the demonstration are commands to run the following Docker images:
 ### Contents
 
 1. [Preparation](#preparation)
-    1. [Set environment variables](#set-environment-variables)
+    1. [Set environment variables for preparation](#set-environment-variables-for-preparation)
     1. [Clone repository](#clone-repository)
     1. [Software](#software)
     1. [Docker images](#docker-images)
 1. [Run Docker formation](#run-docker-formation)
     1. [Create SENZING_DIR](#create-senzing_dir)
-    1. [Set environment variables](#set-environment-variables)
+    1. [Set environment variables for docker](#set-environment-variables-for-docker)
     1. [Launch docker formation](#launch-docker-formation)
     1. [Add Senzing schemas](#add-senzing-schemas)
     1. [Add content](#add-content)
@@ -31,7 +31,7 @@ Also shown in the demonstration are commands to run the following Docker images:
 
 ## Preparation
 
-### Set environment variables
+### Set environment variables for preparation
 
 These variables may be modified, but do not need to be modified.
 The variables are used throughout the installation procedure.
@@ -109,14 +109,13 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Set environment variables for docker
 
-1. For explanation of environment variables, see:
-    1. [senzing/docker-python-db2-cluster-base](https://github.com/Senzing/docker-python-db2-cluster-base#set-environment-variables-for-demonstration)
-    1. [senzing/docker-db2express-c](https://github.com/Senzing/docker-db2express-c#run-docker-container)
 1. **DB2_NETWORK** -
    The network created by `docker-compose`.  To view, run `docker network ls`.
-1. The values in the example below are specific to
-   [docker-compose.yaml](docker-compose.yaml).
-1. Example:
+1. For explanation of other environment variables, see:
+    1. [senzing/docker-python-db2-cluster-base](https://github.com/Senzing/docker-python-db2-cluster-base#set-environment-variables-for-demonstration)
+    1. [senzing/docker-db2express-c](https://github.com/Senzing/docker-db2express-c#run-docker-container)
+1. The values in the example are specific to
+   [docker-compose.yaml](docker-compose.yaml):
 
     ```console
     export SENZING_DIR=/opt/senzing
@@ -155,8 +154,9 @@ cd ${GIT_REPOSITORY_DIR}
 docker-compose up
 ```
 
-The database storage will be on the local system at ${db2_STORAGE}.
-The default database storage path is `/storage/docker/senzing/docker-compose-db2-cluster-demo`.
+The DB2 database storage will be on the local system at ${DB2_STORAGE_*} paths.
+Example: `/storage/docker/senzing/docker-compose-db2-cluster-demo-core`.
+The default database storage path is `/storage/docker/senzing/docker-compose-db2-cluster-demo-XXXX`.
 
 ### Add Senzing schemas
 
