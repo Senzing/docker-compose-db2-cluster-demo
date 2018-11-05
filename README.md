@@ -109,19 +109,13 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Set environment variables for docker
 
-1. **SENZING_DIR** -
-   Path on the local system where
-   [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
-   has been extracted.
-   See [Create SENZING_DIR](#create-senzing_dir).
-   No default.
-   Usually set to "/opt/senzing".
-1. **DB2INST1_PASSWORD** -
-   The password for the the database "db2inst1" user name.
-   Default: "root"
-1. **DB2_STORAGE** -
-   Path on local system where the database files are stored.
-   Default: "/storage/docker/senzing/docker-compose-db2-cluster-demo"
+1. For explanation of environment variables, see:
+    1. [senzing/docker-python-db2-cluster-base](https://github.com/Senzing/docker-python-db2-cluster-base#set-environment-variables-for-demonstration)
+    1. [senzing/docker-db2express-c](https://github.com/Senzing/docker-db2express-c#run-docker-container)
+1. **DB2_NETWORK** -
+   The network created by `docker-compose`.  To view, run `docker network ls`.
+1. The values in the example below are specific to
+   [docker-compose.yaml](docker-compose.yaml).
 1. Example:
 
     ```console
@@ -180,21 +174,16 @@ In a separate terminal window:
       senzing/db2
     ```
 
-1. Catalog "remote" database. In docker container, run
+1. Become "db2inst1" user. In docker container, run
 
     ```console
     su - db2inst1
-
-    db2 catalog tcpip node G2_CORE  remote senzing-db2-core  server 50000
-    db2 catalog tcpip node G2_RES   remote senzing-db2-res   server 50000
-    db2 catalog tcpip node G2_LIBFE remote senzing-db2-libfe server 50000
-
-    db2 terminate
     ```
 
 1. Create database on "CORE" DB2 server. In docker container, run
 
     ```console
+    db2 catalog tcpip node G2_CORE remote senzing-db2-core server 50000
     db2 attach to G2_CORE user db2inst1 using db2inst1
     db2 create database g2 using codeset utf-8 territory us
     db2 connect to g2 user db2inst1 using db2inst1
@@ -205,6 +194,7 @@ In a separate terminal window:
 1. Create database on "RES" DB2 server. In docker container, run
 
     ```console
+    db2 catalog tcpip node G2_RES remote senzing-db2-res server 50000
     db2 attach to G2_RES user db2inst1 using db2inst1
     db2 create database g2 using codeset utf-8 territory us
     db2 connect to g2 user db2inst1 using db2inst1
@@ -215,6 +205,7 @@ In a separate terminal window:
 1. Create database on "LIBFE" DB2 server. In docker container, run
 
     ```console
+    db2 catalog tcpip node G2_LIBFE remote senzing-db2-libfe server 50000
     db2 attach to G2_LIBFE user db2inst1 using db2inst1
     db2 create database g2 using codeset utf-8 territory us
     db2 connect to g2 user db2inst1 using db2inst1
@@ -275,6 +266,6 @@ cd ${GIT_REPOSITORY_DIR}
 docker-compose down
 
 sudo rm -rf /storage/docker/senzing/docker-compose-db2-cluster-demo-core
-sudo rm -rf /storage/docker/senzing/docker-compose-db2-cluster-demo-res
 sudo rm -rf /storage/docker/senzing/docker-compose-db2-cluster-demo-libfe
+sudo rm -rf /storage/docker/senzing/docker-compose-db2-cluster-demo-res
 ```
