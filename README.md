@@ -38,7 +38,7 @@ The variables are used throughout the installation procedure.
 
 ```console
 export GIT_ACCOUNT=senzing
-export GIT_REPOSITORY=docker-compose-db2-demo
+export GIT_REPOSITORY=docker-compose-db2-cluster-demo
 ```
 
 Synthesize environment variables.
@@ -79,12 +79,12 @@ docker-compose --version
 ### Docker images
 
 1. Because an independent download is needed for the DB2 ODBC client, the
-   [senzing/python-db2-base](https://github.com/Senzing/docker-python-db2-base)
+   [senzing/python-db2-cluster-base](https://github.com/Senzing/docker-python-db2-cluster-base)
    docker image must be manually built.
    Follow the build instructions at
-   [github.com/Senzing/docker-python-db2-base](https://github.com/Senzing/docker-python-db2-base#build)
+   [github.com/Senzing/docker-python-db2-cluster-base](https://github.com/Senzing/docker-python-db2-cluster-base#build)
 
-1. Verify `senzing/python-db2-base` is a local image.
+1. Verify `senzing/python-db2-cluster-base` is a local image.
 
     ```console
     docker images
@@ -121,7 +121,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
    Default: "root"
 1. **DB2_STORAGE** -
    Path on local system where the database files are stored.
-   Default: "/storage/docker/senzing/docker-compose-db2-demo"
+   Default: "/storage/docker/senzing/docker-compose-db2-cluster-demo"
 1. Example:
 
     ```console
@@ -162,7 +162,7 @@ docker-compose up
 ```
 
 The database storage will be on the local system at ${db2_STORAGE}.
-The default database storage path is `/storage/docker/senzing/docker-compose-db2-demo`.
+The default database storage path is `/storage/docker/senzing/docker-compose-db2-cluster-demo`.
 
 ### Add Senzing schemas
 
