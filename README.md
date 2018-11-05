@@ -151,7 +151,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     export DB2_PASSWORD_RES=db2inst1
     export DB2_PASSWORD_LIBFE=db2inst1
 
-    export DB2_NETWORK=dockercomposedb2demo_backend
+    export DB2_NETWORK=dockercomposedb2clusterdemo_backend
     ```
 
 ### Launch docker formation
