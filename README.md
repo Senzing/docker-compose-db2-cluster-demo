@@ -2,16 +2,20 @@
 
 ## Overview
 
+This demonstration illustrates how to
+[scale out your database with clustering](https://senzing.zendesk.com/hc/en-us/articles/360010599254-Scaling-out-your-database-with-Clustering)
+by creating three DB2 database instances for use by Senzing.
+
 This docker formation brings up the following docker containers:
 
-1. *senzing/db2express-c*
-1. *senzing/python-db2-demo*
+1. *senzing/db2express-c*  (3 instances)
+1. *senzing/python-db2-cluster-demo*
 
 Also shown in the demonstration are commands to run the following Docker images:
 
 1. *senzing/db2* in [Add Senzing schemas](#add-senzing-schemas)
-1. *senzing/g2loader-db2* in [Add content](#add-content)
-1. *senzing/g2command-db2* in [Run G2Command.py](#run-g2commandpy)
+1. *senzing/g2loader-db2-cluster* in [Add content](#add-content)
+1. *senzing/g2command-db2-cluster* in [Run G2Command.py](#run-g2commandpy)
 
 ### Contents
 
