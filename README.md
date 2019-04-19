@@ -42,14 +42,14 @@ The following software programs need to be installed.
 #### docker
 
 ```console
-docker --version
-docker run hello-world
+sudo docker --version
+sudo docker run hello-world
 ```
 
 #### docker-compose
 
 ```console
-docker-compose --version
+sudo docker-compose --version
 ```
 
 ### Set environment variables for preparation
@@ -91,17 +91,17 @@ git clone ${GIT_REPOSITORY_URL}
 1. Verify `senzing/python-db2-cluster-base` is a local image.
 
     ```console
-    docker images
+    sudo docker images
     ```
 
 1. Build the following docker images.
 
     ```console
-    docker build --tag senzing/db2express-c            https://github.com/senzing/docker-db2express-c.git
-    docker build --tag senzing/db2                     https://github.com/senzing/docker-db2.git
-    docker build --tag senzing/python-db2-cluster-demo https://github.com/senzing/docker-python-db2-cluster-demo.git
-    docker build --tag senzing/g2loader-db2-cluster    https://github.com/senzing/docker-g2loader-db2-cluster.git
-    docker build --tag senzing/g2command-db2-cluster   https://github.com/senzing/docker-g2command-db2-cluster.git
+    sudo docker build --tag senzing/db2express-c            https://github.com/senzing/docker-db2express-c.git
+    sudo docker build --tag senzing/db2                     https://github.com/senzing/docker-db2.git
+    sudo docker build --tag senzing/python-db2-cluster-demo https://github.com/senzing/docker-python-db2-cluster-demo.git
+    sudo docker build --tag senzing/g2loader-db2-cluster    https://github.com/senzing/docker-g2loader-db2-cluster.git
+    sudo docker build --tag senzing/g2command-db2-cluster   https://github.com/senzing/docker-g2command-db2-cluster.git
     ```
 
 ### Create SENZING_DIR
@@ -160,7 +160,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ```console
 cd ${GIT_REPOSITORY_DIR}
-docker-compose up
+sudo docker-compose up
 ```
 
 The DB2 database storage will be on the local system at ${DB2_STORAGE_*} paths.
@@ -175,7 +175,7 @@ In a separate terminal window:
 1. Run `docker` command.
 
     ```console
-    docker run -it  \
+    sudo docker run -it  \
       --volume ${SENZING_DIR}:/opt/senzing \
       --net ${DB2_NETWORK} \
       --env DB2INST1_PASSWORD=db2inst1 \
@@ -240,7 +240,7 @@ In a separate (or reusable) terminal window:
 1. Run `docker` command
 
     ```console
-    docker run -it  \
+    sudo docker run -it  \
       --volume ${SENZING_DIR}:/opt/senzing \
       --net ${DB2_NETWORK} \
       --env SENZING_CORE_DATABASE_URL="db2://${DB2_USERNAME_CORE}:${DB2_PASSWORD_CORE}@${DB2_HOST_CORE}:${DB2_PORT_CORE}/${DB2_DATABASE_ALIAS_CORE}" \
@@ -259,7 +259,7 @@ In a separate (or reusable) terminal window:
 1. Run `docker` command
 
     ```console
-    docker run -it  \
+    sudo docker run -it  \
       --volume ${SENZING_DIR}:/opt/senzing \
       --net ${DB2_NETWORK} \
       --env SENZING_CORE_DATABASE_URL="db2://${DB2_USERNAME_CORE}:${DB2_PASSWORD_CORE}@${DB2_HOST_CORE}:${DB2_PORT_CORE}/${DB2_DATABASE_ALIAS_CORE}" \
@@ -272,7 +272,7 @@ In a separate (or reusable) terminal window:
 
 ```console
 cd ${GIT_REPOSITORY_DIR}
-docker-compose down
+sudo docker-compose down
 
 sudo rm -rf /storage/docker/senzing/docker-compose-db2-cluster-demo-core
 sudo rm -rf /storage/docker/senzing/docker-compose-db2-cluster-demo-libfe
