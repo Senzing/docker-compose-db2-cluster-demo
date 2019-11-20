@@ -1,5 +1,8 @@
 # docker-compose-db2-cluster-demo
 
+## :warning: [Obsolete]
+This repository has not been updated to use the RPM/DEB installation of Senzing.
+
 ## Overview
 
 This demonstration illustrates how to
@@ -41,52 +44,47 @@ Also shown in the demonstration are commands to run the following Docker images:
 1. :pencil2: - A "pencil" icon means that the instructions may need modification before performing.
 1. :warning: - A "warning" icon means that something tricky is happening, so pay attention.
 
+## Expectations
+
+### Space
+
+This repository and demonstration require 6 GB free disk space.
+
+### Time
+
+Budget 40 minutes to get the demonstration up-and-running, depending on CPU and network speeds.
+
+### Background knowledge
+
+This repository assumes a working knowledge of:
+
+1. [Docker](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/docker.md)
+1. [Docker-compose](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/docker-compose.md)
+
 ## Preparation
 
-### Software
+### Prerequisite software
 
-The following software programs need to be installed.
+The following software programs need to be installed:
 
-#### docker
-
-```console
-sudo docker --version
-sudo docker run hello-world
-```
-
-#### docker-compose
-
-```console
-sudo docker-compose --version
-```
-
-### Set environment variables for preparation
-
-These variables may be modified, but do not need to be modified.
-The variables are used throughout the installation procedure.
-
-```console
-export GIT_ACCOUNT=senzing
-export GIT_REPOSITORY=docker-compose-db2-cluster-demo
-```
-
-Synthesize environment variables.
-
-```console
-export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
-export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
-export GIT_REPOSITORY_URL="https://github.com/${GIT_ACCOUNT}/${GIT_REPOSITORY}.git"
-```
+1. [docker](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker.md)
+1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker-compose.md)
 
 ### Clone repository
 
-Get repository.
+For more information on environment variables,
+see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md).
 
-```console
-mkdir --parents ${GIT_ACCOUNT_DIR}
-cd  ${GIT_ACCOUNT_DIR}
-git clone ${GIT_REPOSITORY_URL}
-```
+1. Set these environment variable values:
+
+    ```console
+    export GIT_ACCOUNT=senzing
+    export GIT_REPOSITORY=docker-compose-db2-cluster-demo
+    export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
+    export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
+    ```
+
+1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/clone-repository.md) to install the Git repository.
 
 ### Docker images
 
@@ -278,11 +276,26 @@ In a separate (or reusable) terminal window:
 
 ## Cleanup
 
-```console
-cd ${GIT_REPOSITORY_DIR}
-sudo docker-compose down
+In a separate (or reusable) terminal window:
 
-sudo rm -rf /storage/docker/senzing/docker-compose-db2-cluster-demo-core
-sudo rm -rf /storage/docker/senzing/docker-compose-db2-cluster-demo-libfe
-sudo rm -rf /storage/docker/senzing/docker-compose-db2-cluster-demo-res
-```
+1. Use environment variable describe in "[Clone repository](#clone-repository)" and "[Configuration](#configuration)".
+1. Run `docker-compose` command.
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo docker-compose down
+    ```
+
+1. Delete storage.
+
+    ```console
+    sudo rm -rf /storage/docker/senzing/docker-compose-db2-cluster-demo-core
+    sudo rm -rf /storage/docker/senzing/docker-compose-db2-cluster-demo-libfe
+    sudo rm -rf /storage/docker/senzing/docker-compose-db2-cluster-demo-res
+    ```
+
+1. Delete git repository.
+
+    ```console
+    sudo rm -rf ${GIT_REPOSITORY_DIR}
+    ```
