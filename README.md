@@ -1,6 +1,7 @@
 # docker-compose-db2-cluster-demo
 
-## :warning: [Obsolete]
+## :warning: Obsolete
+
 This repository has not been updated to use the RPM/DEB installation of Senzing.
 
 ## Overview
@@ -22,9 +23,12 @@ Also shown in the demonstration are commands to run the following Docker images:
 
 ### Contents
 
+1. [Expectations](#expectations)
+    1. [Space](#space)
+    1. [Time](#time)
+    1. [Background knowledge](#background-knowledge)
 1. [Preparation](#preparation)
-    1. [Software](#software)
-    1. [Set environment variables for preparation](#set-environment-variables-for-preparation)
+    1. [Prerequisite software](#prerequisite-software)
     1. [Clone repository](#clone-repository)
     1. [Docker images](#docker-images)
     1. [Create SENZING_DIR](#create-senzing_dir)
